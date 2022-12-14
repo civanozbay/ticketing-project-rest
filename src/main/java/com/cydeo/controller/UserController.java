@@ -25,7 +25,7 @@ public class UserController {
         return ResponseEntity.ok(new ResponseWrapper("Users are successfully retrieved",userDTOList, HttpStatus.OK));
     }
 
-    @GetMapping("/{username}")
+    @GetMapping("/{userName}")
     public ResponseEntity<ResponseWrapper> getUserByUserName(@PathVariable("userName") String userName){
         UserDTO user = userService.findByUserName(userName);
         return ResponseEntity.ok(new ResponseWrapper("User is successfully retrieved",user,HttpStatus.OK));
