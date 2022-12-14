@@ -47,6 +47,13 @@ public class UserController {
         userService.deleteByUserName(userName);
         return ResponseEntity.ok(new ResponseWrapper("User is successfully deleted",HttpStatus.OK));
     }
-
+//    @DeleteMapping("/{userName}")
+//    public ResponseEntity<ResponseWrapper> deleteUser(@PathVariable("userName") String userName){
+//        userService.deleteByUserName(userName);
+//        return ResponseEntity.ok(new ResponseWrapper("User is successfully deleted",HttpStatus.OK));
+////        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(new ResponseWrapper("User is successfully created",HttpStatus.CREATED));
+//
+//        //204 - HttpStatus.NO_CONTENT
+//    }
 
 }
