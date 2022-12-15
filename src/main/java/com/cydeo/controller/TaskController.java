@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
+import javax.annotation.security.RolesAllowed;
 import java.util.List;
 
 @RestController
@@ -21,47 +22,55 @@ public class TaskController {
     }
 
     @GetMapping
+    @RolesAllowed("Manager")
     public ResponseEntity<ResponseWrapper> getTasks(){
         List<TaskDTO> taskDTOS = taskService.listAllTasks();
         return ResponseEntity.ok(new ResponseWrapper("tasks are successfully retrieved",taskDTOS, HttpStatus.OK));
     }
 
     @GetMapping("/{taskId}")
+    @RolesAllowed("Manager")
     public ResponseEntity<ResponseWrapper> getTaskById(@PathVariable("taskId") Long taskId){
         TaskDTO taskDTO =taskService.findById(taskId);
         return ResponseEntity.ok(new ResponseWrapper("tasks are retrieved",taskDTO, HttpStatus.OK));
     }
 
     @PostMapping
+    @RolesAllowed("Manager")
     public ResponseEntity<ResponseWrapper> createTask(@RequestBody TaskDTO taskDTO){
         taskService.save(taskDTO);
         return ResponseEntity.status(HttpStatus.CREATED).body(new ResponseWrapper("tasks is created", HttpStatus.CREATED));
     }
 
     @DeleteMapping("/{taskId}")
+    @RolesAllowed("Manager")
     public ResponseEntity<ResponseWrapper> deleteTask(@PathVariable("taskId") Long taskId){
         taskService.delete(taskId);
         return ResponseEntity.ok(new ResponseWrapper("tasks is deleted", HttpStatus.OK));
     }
 
     @PutMapping
+    @RolesAllowed("Manager")
     public ResponseEntity<ResponseWrapper> updateTask(@RequestBody TaskDTO taskDTO){
         taskService.update(taskDTO);
         return ResponseEntity.ok(new ResponseWrapper("tasks are listed", HttpStatus.OK));
     }
 
     @GetMapping("/employee/pending-tasks")
+    @RolesAllowed("Employee")
     public ResponseEntity<ResponseWrapper> employeePendingTasks(){
         List<TaskDTO> taskDTOS = taskService.listAllTasksByStatusIsNot(Status.COMPLETE);
         return ResponseEntity.ok(new ResponseWrapper("tasks are successfully retrieved",taskDTOS, HttpStatus.OK));
     }
     @PutMapping("/employee/update")
+    @RolesAllowed("Employee")
     public ResponseEntity<ResponseWrapper> employeeUpdateTasks(@RequestBody TaskDTO taskDTO){
         taskService.updateStatus(taskDTO);
         return ResponseEntity.ok(new ResponseWrapper("tasks are successfully updated", HttpStatus.OK));
     }
 
     @GetMapping("/employee/archive")
+    @RolesAllowed("Employee")
     public ResponseEntity<ResponseWrapper> employeeArchivedTasks(){
         List<TaskDTO> taskDTOS = taskService.listAllTasksByStatus(Status.COMPLETE);
         return ResponseEntity.ok(new ResponseWrapper("tasks are successfully retrieved",taskDTOS, HttpStatus.OK));
